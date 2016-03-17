@@ -1,0 +1,18 @@
+{
+    "name": "lukezbihlyj/silex-orm",
+    "description": "Simple and flexible ORM to be used with the silex-plus package.",
+    "type": "library",
+    "require": {
+        "php": ">=5.4",
+
+        "silex/silex": "~1.3",
+        "lukezbihlyj/silex-plus": "~1.0",
+
+        "dijky/spot-service-provider": "dev-master"
+    },
+    "autoload": {
+        "psr-4": {
+            "LukeZbihlyj\\SilexORM\\": "module/SilexORM/src/"
+        }
+    }
+}
