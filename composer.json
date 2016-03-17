@@ -6,7 +6,7 @@
         "php": ">=5.4",
 
         "silex/silex": "~1.3",
-        "lukezbihlyj/silex-plus": "~1.0",
+        "lukezbihlyj/silex-plus": "dev-master",
 
         "dijky/spot-service-provider": "dev-master"
     },
