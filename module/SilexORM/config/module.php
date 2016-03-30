@@ -18,4 +18,11 @@ return [
      * migrations.
      */
     'database.entities' => [],
+
+    /**
+     * Define a list of commands that should be added to the console on initialisation.
+     */
+    'console.commands' => [
+        'LukeZbihlyj\SilexORM\Console\DatabaseMigrateCommand'
+    ],
 ];
