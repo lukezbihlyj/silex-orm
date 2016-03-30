@@ -35,8 +35,8 @@ class DatabaseMigrateCommand extends ConsoleCommand
 
             $mapper = $app->getSpot()->mapper($entity);
             $mapper->migrate();
-
-            $output->writeln('<info>Entity ' . $entity . ' successfully migrated!</info>');
         }
+
+        $output->writeln('<info>Finished migration!</info>');
     }
 }
