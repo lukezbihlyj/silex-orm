@@ -44,8 +44,6 @@ class Resolver extends BaseResolver
             $queries = $newSchema->toSql($connection->getDatabasePlatform());
         }
 
-        print_r($queries);
-
         $lastResult = false;
         foreach ($queries as $sql) {
             $lastResult = $connection->exec($sql);
