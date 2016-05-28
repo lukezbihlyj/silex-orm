@@ -3,6 +3,7 @@
 namespace LukeZbihlyj\SilexORM\Console;
 
 use LukeZbihlyj\SilexPlus\Console\ConsoleCommand;
+use LukeZbihlyj\SilexORM\Query\Resolver;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -34,7 +35,9 @@ class DatabaseMigrateCommand extends ConsoleCommand
             $output->writeln('<comment>Found entity ' . $entity . ', running migration...</comment>');
 
             $mapper = $app->getSpot()->mapper($entity);
-            $mapper->migrate();
+            $resolver = new Resolver($mapper);
+
+            $resolver->migrate();
         }
 
         $output->writeln('<info>Finished migration!</info>');
