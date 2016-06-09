@@ -8,6 +8,7 @@ use Spot\Query\Resolver as SpotResolver;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Spot\Relation\BelongsTo;
+use LukeZbihlyj\SilexORM\MapperCacheInterface;
 
 /**
  * @package LukeZbihlyj\SilexORM\Query\Resolver
