@@ -4,7 +4,7 @@ namespace LukeZbihlyj\SilexORM\Query;
 
 use Spot\Mapper;
 use Spot\Query;
-use Spot\Query\Resolver as BaseResolver;
+use Spot\Query\Resolver as SpotResolver;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Table;
 use Spot\Relation\BelongsTo;
@@ -12,12 +12,60 @@ use Spot\Relation\BelongsTo;
 /**
  * @package LukeZbihlyj\SilexORM\Query\Resolver
  */
-class Resolver extends BaseResolver
+class Resolver extends SpotResolver
 {
     /**
-     * @return bool
-     * @throws SchemaException
-     * @throws Exception
+     * {@inheritDoc}
+     */
+    public function read(Query $query)
+    {
+        $builder = $query->builder();
+        $queryHash = md5($builder->getSql() . '_' . serialize($builder->getParameters()));
+
+        if ($this->mapper instanceof MapperCacheInterface) {
+            if ($builder->getType() == 0) {
+                $collection = $this->mapper->getQueryFromCache($queryHash);
+
+                if ($collection) {
+                    return $collection;
+                }
+            } else {
+                $this->mapper->clearQueryCache();
+            }
+        }
+
+        /*
+        if ($query->builder()->getType() == 0) {
+            $clonedQuery = clone $query->builder();
+
+            $res = $clonedQuery->getConnection()->executeQuery('EXPLAIN ' . $clonedQuery->getSQL(), $clonedQuery->getParameters(), $clonedQuery->getParameterTypes());
+            $res->setFetchMode(\PDO::FETCH_ASSOC);
+
+            echo '<pre>';
+            var_dump($queryHash);
+            var_dump($clonedQuery->getSQL());
+            var_dump($clonedQuery->getParameters());
+            var_dump($res->fetchAll());
+            echo '</pre>';
+        }
+        */
+
+        $stmt = $builder->execute();
+        $stmt->setFetchMode(\PDO::FETCH_ASSOC);
+
+        $collection = $query->mapper()->collection($stmt, $query->with());
+
+        $stmt->closeCursor();
+
+        if ($this->mapper instanceof MapperCacheInterface && $builder->getType() == 0) {
+            $this->mapper->addQueryToCache($queryHash, $collection);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function migrate()
     {
@@ -53,7 +101,7 @@ class Resolver extends BaseResolver
     }
 
     /**
-     * @return Schema
+     * {@inheritDoc}
      */
     public function migrateCreateSchema()
     {

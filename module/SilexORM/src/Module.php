@@ -4,7 +4,6 @@ namespace LukeZbihlyj\SilexORM;
 
 use LukeZbihlyj\SilexPlus\Application;
 use LukeZbihlyj\SilexPlus\ModuleInterface;
-use Spot\Locator;
 use Spot\Config;
 use Pimple;
 
