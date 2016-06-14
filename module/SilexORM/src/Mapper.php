@@ -10,6 +10,8 @@ use Spot\Entity\Collection;
  */
 class Mapper extends SpotMapper implements MapperCacheInterface
 {
+    const CACHE_MAX_SIZE = 64;
+
     /**
      * @var array
      */
@@ -43,6 +45,10 @@ class Mapper extends SpotMapper implements MapperCacheInterface
      */
     public function addQueryToCache($queryHash, Collection $collection)
     {
+        if (count($this->queryCache) == self::CACHE_MAX_SIZE) {
+            array_shift($this->queryCache);
+        }
+
         $this->queryCache[$queryHash] = serialize($collection);
 
         return $this;
