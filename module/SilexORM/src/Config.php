@@ -35,13 +35,10 @@ class Config extends SpotConfig
 
                 if ($connectionParams['driver'] == 'pdo_mysql' && isset($connectionParams['persistent'])) {
                     $host = $connectionParams['host'] ?: 'localhost';
-
-                    if ($connectionParams['port']) {
-                        $host .= ':' . $connectionParams['port'];
-                    }
+                    $port = $connectionParams['port'] ? ';port=' . $connectionParams['port'] : '';
 
                     $connectionParams['pdo'] = new PDO(
-                        'mysql:host=' . $host . ';dbname=' . $connectionParams['dbname'],
+                        'mysql:host=' . $host . $port . ';dbname=' . $connectionParams['dbname'],
                         $connectionParams['user'],
                         $connectionParams['password'],
                         [
